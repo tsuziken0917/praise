@@ -1,0 +1,15 @@
+.input-box{
+    height:110px;
+    padding:0 20px;
+    display: flex;
+    align-items: center;
+    justify-content:space-between;
+    background:#B2DFDB;
+    border-radius: 0 0 5px 5px;
+}
+
+.input-user{ 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

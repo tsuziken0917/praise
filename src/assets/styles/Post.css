@@ -1,0 +1,9 @@
+ul{
+    list-style: none;
+}
+
+.chats-box{
+    height:400px;
+    padding:0;
+    overflow:auto;
+}

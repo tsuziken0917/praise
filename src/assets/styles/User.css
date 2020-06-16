@@ -1,0 +1,10 @@
+.user-box{
+    height:90px;
+    padding:0 20px;
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
+    background:#009688;
+    border-radius: 5px 5px 0 0;
+}
+
