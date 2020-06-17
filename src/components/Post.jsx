@@ -19,16 +19,6 @@ export default class Post extends React.Component {
     super(props)
    
   }
-  sort(postList){
-    let n=postList.sort(function(a,b){
-      if(a.time>b.time) return -1;
-      if(a.time<b.time) return 1;
-      return 0;
-    })
-    return n;
-  }
-
-
 
   render(){
     return (

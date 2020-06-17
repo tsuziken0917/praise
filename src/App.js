@@ -7,6 +7,7 @@ class App extends React.Component {
     super();
 
     this.state = {
+      storage:true,
       users: [],
       posts: [],
       currentUser: "Harry",
@@ -15,11 +16,21 @@ class App extends React.Component {
   }
   componentWillMount() {
 
+    const storage = localStorage.getItem('storage');
+    if (storage === null) {
+    let posts=[];
     let users = this.state.users
     users.push(this.createUser(0, "Harry"))
     users.push(this.createUser(1, "Ron"))
     users.push(this.createUser(2, "Hermionie"))
     users.push(this.createUser(3, "Voldemort"))
+    localStorage.setItem('storage', false);
+    this.setState({storage: false});
+
+    localStorage.setItem('users', JSON.stringify(users));
+    localStorage.setItem('posts', JSON.stringify(posts));
+
+    }
     const storageUsers = localStorage.getItem('users');
     const storagePosts = localStorage.getItem('posts');
     this.setState({
@@ -29,7 +40,6 @@ class App extends React.Component {
   }
 
   componentDidUpdate() {
-
     localStorage.setItem('posts', JSON.stringify(this.state.posts));
     localStorage.setItem('users', JSON.stringify(this.state.users));
   }

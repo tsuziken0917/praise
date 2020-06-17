@@ -4,10 +4,10 @@
 
 # 起動手順
 
-1.ルートディレクトリで `npm install`
-2.`npm install @material-ui/core`を実行
-3.`npm install react-tooltip`を実行
-4.`npm start`を実行。ローカルサーバーでアプリケーションが起動します。
+- 1.ルートディレクトリで `npm install`
+- 2.`npm install @material-ui/core`を実行
+- 3.`npm install react-tooltip`を実行
+- 4.`npm start`を実行。ローカルサーバーでアプリケーションが起動します。
 
 
 # 採点項目リスト
