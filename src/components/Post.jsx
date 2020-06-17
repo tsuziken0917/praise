@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Divider from '@material-ui/core/Divider';
@@ -17,19 +17,29 @@ import ReactTooltip from 'react-tooltip'
 export default class Post extends React.Component {
   constructor(props) {
     super(props)
-    
+   
   }
+  sort(postList){
+    let n=postList.sort(function(a,b){
+      if(a.time>b.time) return -1;
+      if(a.time<b.time) return 1;
+      return 0;
+    })
+    return n;
+  }
+
+
+
   render(){
-    
- 
     return (
+
       <div className="chats-box" id={"scroll-area"}>
         {this.props.postList.map((chat, index) => {
           return (
             <ChatApp
               id={chat.id}
               text={chat.textCompliment}
-              time={chat.timestamp}
+              time={chat.postTime}
               onApplause={this.props.onApplause}
               applause={chat.applause}
               postList={this.props.postList}
@@ -37,6 +47,7 @@ export default class Post extends React.Component {
               targetUser={this.props.targetUser}
               handleApplauseUser={this.props.handleApplauseUser}
               users={this.props.users}
+              key={index.toString()}
             />
           )
         })}
@@ -51,7 +62,9 @@ function ChatApp(props) {
   let targetUser = "";
   let applauses = "";
   let postApplauses = props.postList[props.id].applauses;
+  let applauseNames=[];
   let applauseUsers=[];
+
   
   let inputLimit = false
   let currentUserName = props.currentUser
@@ -79,9 +92,16 @@ function ChatApp(props) {
 
   applauses = props.postList[props.id].applauses;
 
+
+  const handleApplause = () => {
+    props.onApplause(props.postList[props.id]);
+  };
+
   //sum以外のキーを取得
 
-　let applauseNames=Object.keys(postApplauses).slice(1)
+
+
+　applauseNames=Object.keys(postApplauses).slice(1)
 
   applauseNames.map((name,index)=>{
     applauseUsers.push(createApplauseList(name))
@@ -94,6 +114,10 @@ function ChatApp(props) {
     return 0;
 });
 
+
+
+
+
  function createApplauseList(user) {
   let applause=postApplauses[user]
   if(applause===16) {applause-=1}
@@ -103,9 +127,7 @@ function ChatApp(props) {
   });
 }
 
-  const handleApplause = () => {
-    props.onApplause(props.postList[props.id]);
-  };
+
 
   return (
     <List className={classes.root}>
@@ -119,10 +141,12 @@ function ChatApp(props) {
           <div>{props.text}</div>
          
           <p>{props.time}</p>
-            <div data-tip data-for="hover"><Button  variant="outlined" color="secondary" onClick={handleApplause} disabled={inputLimit} >{applauses.sum}</Button></div>
+            <span data-tip data-for="hover"><Button  variant="outlined" color="secondary" onClick={handleApplause} disabled={inputLimit} >{applauses.sum}</Button></span>
+         
             <ReactTooltip id="hover" place="bottom">
            <ul>
-            {applauseUsers.map( applauseUser =>
+            {
+              applauseUsers.map( applauseUser =>
               <li>{applauseUser.name}:{applauseUser.applause}</li>
             )}
             </ul>

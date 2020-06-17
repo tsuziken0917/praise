@@ -20,19 +20,16 @@ class App extends React.Component {
     users.push(this.createUser(1, "Ron"))
     users.push(this.createUser(2, "Hermionie"))
     users.push(this.createUser(3, "Voldemort"))
-
     const storageUsers = localStorage.getItem('users');
     const storagePosts = localStorage.getItem('posts');
     this.setState({
       users: JSON.parse(storageUsers),
       posts: JSON.parse(storagePosts),
     });
-
   }
 
   componentDidUpdate() {
-    { console.log(this.state.posts) }
-    { console.log(this.state.users) }
+
     localStorage.setItem('posts', JSON.stringify(this.state.posts));
     localStorage.setItem('users', JSON.stringify(this.state.users));
   }
@@ -59,11 +56,10 @@ class App extends React.Component {
     let posts = this.state.posts;
     let postID = posts.length === 0 ? 0 : posts[posts.length - 1].id + 1;
     const currentTime = new Date();
-    posts.push(createPost(postID, currentTime, this.state.currentUser, this.state.targetUser, value));
+    posts.push(createPost(postID, currentTime, currentTime, this.state.currentUser, this.state.targetUser, value));
     this.setState({ posts: posts });
 
   };
-
 
 
   handleApplause = (post) => {
@@ -145,10 +141,11 @@ class App extends React.Component {
 export default App;
 
 
-function createPost(id, timestamp, postUser, targetUser, textCompliment) {
+function createPost(id, times, postTime, postUser, targetUser, textCompliment) {
   return ({
     id: id,
-    timestamp: time(timestamp),
+    time: times,
+    postTime: time(postTime),
     currentUser: postUser,
     targetUser: targetUser,
     textCompliment: textCompliment,
