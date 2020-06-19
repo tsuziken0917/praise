@@ -13,19 +13,29 @@ import Ron from '../assets/img/Ron.jpg'
 import Hermionie from '../assets/img/Hermionie.jpg'
 import Voldemort from '../assets/img/Voldemort.jpg'
 import ReactTooltip from 'react-tooltip'
+let postCount=-1;
 
 export default class Post extends React.Component {
   constructor(props) {
-    super(props)
-   
+    super(props);
+
   }
 
-  render(){
-    return (
+  postCount(){  
+    postCount+=1;
+    return postCount;   
+  }
+  postCountDelete(){
+    postCount=-1;
+  }
 
+
+  render() {
+    return (
       <div className="chats-box" id={"scroll-area"}>
         {this.props.postList.map((chat, index) => {
-          return (
+           {this.postCount()}
+          return ( 
             <ChatApp
               id={chat.id}
               text={chat.textCompliment}
@@ -38,12 +48,15 @@ export default class Post extends React.Component {
               handleApplauseUser={this.props.handleApplauseUser}
               users={this.props.users}
               key={index.toString()}
+              postCount={postCount}
             />
-          )
+          )        
         })}
+        {this.postCountDelete()}
       </div>
-    );
+    );  
   }
+
 }
 
 function ChatApp(props) {
@@ -52,10 +65,10 @@ function ChatApp(props) {
   let targetUser = "";
   let applauses = "";
   let postApplauses = props.postList[props.id].applauses;
-  let applauseNames=[];
-  let applauseUsers=[];
+  let applauseNames = [];
+  let applauseUsers = [];
+  let postList = props.postList[props.id];
 
-  
   let inputLimit = false
   let currentUserName = props.currentUser
   if (currentUserName === "Harry") currentUserName = 0
@@ -82,42 +95,43 @@ function ChatApp(props) {
 
   applauses = props.postList[props.id].applauses;
 
-
+  //handleApplauseはpostsのapplausehandle
   const handleApplause = () => {
     props.onApplause(props.postList[props.id]);
   };
 
-  //sum以外のキーを取得
+  function applauseList() {
+    //sum以外のキーを取得
+    let applauseList = [];
+    applauseNames = Object.keys(postApplauses).slice(1)
+    applauseNames.map((name, index) => {
+      applauseUsers.push(createApplauseList(name))
+    })
 
+    //applauseUsersを昇降順に並べる
+    applauseUsers.sort(function (a, b) {
+      if (a.applause > b.applause) return -1;
+      if (a.applause < b.applause) return 1;
+      return 0;
+    });
 
+    console.log(applauseUsers)
+    applauseUsers.map(applauseUser => {  
+        applauseList.push(<li>{applauseUser.name}:{applauseUser.applause}</li>)
+    })
 
-　applauseNames=Object.keys(postApplauses).slice(1)
+    return applauseList;
+  }
 
-  applauseNames.map((name,index)=>{
-    applauseUsers.push(createApplauseList(name))
-  })
- 
-  //applauseUsersを昇降順に並べる
-  applauseUsers.sort(function(a,b){
-    if(a.applause>b.applause) return -1;
-    if(a.applause<b.applause) return 1;
-    return 0;
-});
-
-
-
-
-
- function createApplauseList(user) {
-  let applause=postApplauses[user]
-  if(applause===16) {applause-=1}
-  return ({
-    name: user,
-    applause:applause
-  });
-}
-
-
+  function createApplauseList(user) {
+    let applause = postApplauses[user]
+    if (applause === 16) { applause -= 1 }
+    return ({
+      id: props.id,
+      name: user,
+      applause: applause
+    });
+  }
 
   return (
     <List className={classes.root}>
@@ -129,24 +143,26 @@ function ChatApp(props) {
         </ListItemAvatar>
         <ListItemText>
           <div>{props.text}</div>
-         
           <p>{props.time}</p>
-            <span data-tip data-for="hover"><Button  variant="outlined" color="secondary" onClick={handleApplause} disabled={inputLimit} >{applauses.sum}</Button></span>
-         
-            <ReactTooltip id="hover" place="bottom">
-           <ul>
-            {
-              applauseUsers.map( applauseUser =>
-              <li>{applauseUser.name}:{applauseUser.applause}</li>
-            )}
-            </ul>
-            </ReactTooltip>
+          <span data-tip data-for={String(props.postCount)}>
+            <Button variant="outlined" color="secondary" onClick={handleApplause} disabled={inputLimit}>
+              {applauses.sum}
+            </Button>
+          </span>
+          <ReactTooltip id={String(props.postCount)} place="bottom">
+             {console.log(String(props.postCount))}
+            
+            
+              {applauseList()}
+          
+
+          </ReactTooltip>
         </ListItemText>
       </ListItem>
       <Divider variant="inset" component="li" />
     </List>
   );
 
-  
+
 }
 

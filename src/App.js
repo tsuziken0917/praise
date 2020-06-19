@@ -5,7 +5,6 @@ import { Post, User, Input } from './components/index';
 class App extends React.Component {
   constructor() {
     super();
-
     this.state = {
       storage:true,
       users: [],
@@ -14,8 +13,9 @@ class App extends React.Component {
       targetUser: "Ron",
     }
   }
-  componentWillMount() {
 
+
+  componentWillMount() {
     const storage = localStorage.getItem('storage');
     if (storage === null) {
     let posts=[];
@@ -40,6 +40,7 @@ class App extends React.Component {
   }
 
   componentDidUpdate() {
+   
     localStorage.setItem('posts', JSON.stringify(this.state.posts));
     localStorage.setItem('users', JSON.stringify(this.state.users));
   }
