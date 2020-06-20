@@ -29,7 +29,6 @@ export default class Post extends React.Component {
     postCount=-1;
   }
 
-
   render() {
     return (
       <div className="chats-box" id={"scroll-area"}>
@@ -115,7 +114,7 @@ function ChatApp(props) {
       return 0;
     });
 
-    console.log(applauseUsers)
+
     applauseUsers.map(applauseUser => {  
         applauseList.push(<li>{applauseUser.name}:{applauseUser.applause}</li>)
     })
@@ -149,20 +148,13 @@ function ChatApp(props) {
               {applauses.sum}
             </Button>
           </span>
-          <ReactTooltip id={String(props.postCount)} place="bottom">
-             {console.log(String(props.postCount))}
-            
-            
+          <ReactTooltip id={String(props.postCount)} place="bottom">            
               {applauseList()}
-          
-
           </ReactTooltip>
         </ListItemText>
       </ListItem>
       <Divider variant="inset" component="li" />
     </List>
   );
-
-
 }
 

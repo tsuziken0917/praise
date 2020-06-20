@@ -2,6 +2,8 @@ import React from 'react';
 import './assets/styles/style.css';
 import { Post, User, Input } from './components/index';
 
+let postID=-1
+
 class App extends React.Component {
   constructor() {
     super();
@@ -13,7 +15,6 @@ class App extends React.Component {
       targetUser: "Ron",
     }
   }
-
 
   componentWillMount() {
     const storage = localStorage.getItem('storage');
@@ -39,8 +40,7 @@ class App extends React.Component {
     });
   }
 
-  componentDidUpdate() {
-   
+  componentDidUpdate() {   
     localStorage.setItem('posts', JSON.stringify(this.state.posts));
     localStorage.setItem('users', JSON.stringify(this.state.users));
   }
@@ -64,10 +64,16 @@ class App extends React.Component {
 
 
   handleComplimentSubmit = (value) => {
-    let posts = this.state.posts;
-    let postID = posts.length === 0 ? 0 : posts[posts.length - 1].id + 1;
+    let posts = this.state.posts
+    postID +=1
     const currentTime = new Date();
     posts.push(createPost(postID, currentTime, currentTime, this.state.currentUser, this.state.targetUser, value));
+    posts.sort(function (a, b) {
+      if (a.time > b.time) return -1;
+      if (a.time < b.time) return 1;
+      return 0;
+    })
+    console.log(posts)
     this.setState({ posts: posts });
 
   };
