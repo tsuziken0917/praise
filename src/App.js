@@ -2,7 +2,7 @@ import React from 'react';
 import './assets/styles/style.css';
 import { Post, User, Input } from './components/index';
 
-let postID=-1
+
 
 class App extends React.Component {
   constructor() {
@@ -19,8 +19,11 @@ class App extends React.Component {
   componentWillMount() {
     const storage = localStorage.getItem('storage');
     if (storage === null) {
+    
     let posts=[];
     let users = this.state.users
+    let postID=-1;
+    
     users.push(this.createUser(0, "Harry"))
     users.push(this.createUser(1, "Ron"))
     users.push(this.createUser(2, "Hermionie"))
@@ -28,12 +31,16 @@ class App extends React.Component {
     localStorage.setItem('storage', false);
     this.setState({storage: false});
 
+    localStorage.setItem('postID', JSON.stringify(postID));
     localStorage.setItem('users', JSON.stringify(users));
     localStorage.setItem('posts', JSON.stringify(posts));
 
     }
+    
     const storageUsers = localStorage.getItem('users');
     const storagePosts = localStorage.getItem('posts');
+
+
     this.setState({
       users: JSON.parse(storageUsers),
       posts: JSON.parse(storagePosts),
@@ -65,16 +72,19 @@ class App extends React.Component {
 
   handleComplimentSubmit = (value) => {
     let posts = this.state.posts
+    const storagePostID = localStorage.getItem('postID');
+    let postID=JSON.parse(storagePostID)
     postID +=1
     const currentTime = new Date();
     posts.push(createPost(postID, currentTime, currentTime, this.state.currentUser, this.state.targetUser, value));
     posts.sort(function (a, b) {
-      if (a.time > b.time) return -1;
-      if (a.time < b.time) return 1;
+      if (a.id > b.id) return -1;
+      if (a.id < b.id) return 1;
       return 0;
     })
     console.log(posts)
     this.setState({ posts: posts });
+    localStorage.setItem('postID', JSON.stringify(postID));
 
   };
 
@@ -82,7 +92,7 @@ class App extends React.Component {
   handleApplause = (post) => {
     let postList = [];
     let userList = [];
-    let control = true;
+
 
     this.state.posts.map((elPost, index) => {
       if (post.id === elPost.id) {

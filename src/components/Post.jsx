@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React from "react"
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Divider from '@material-ui/core/Divider';
@@ -13,28 +13,24 @@ import Ron from '../assets/img/Ron.jpg'
 import Hermionie from '../assets/img/Hermionie.jpg'
 import Voldemort from '../assets/img/Voldemort.jpg'
 import ReactTooltip from 'react-tooltip'
-let postCount=-1;
+let postCount = -1;
 
 export default class Post extends React.Component {
-  constructor(props) {
-    super(props);
 
+  postCount() {
+    postCount += 1;
+    return postCount;
   }
-
-  postCount(){  
-    postCount+=1;
-    return postCount;   
-  }
-  postCountDelete(){
-    postCount=-1;
+  postCountReset() {
+    postCount = -1;
   }
 
   render() {
     return (
       <div className="chats-box" id={"scroll-area"}>
         {this.props.postList.map((chat, index) => {
-           {this.postCount()}
-          return ( 
+          this.postCount()
+          return (
             <ChatApp
               id={chat.id}
               text={chat.textCompliment}
@@ -49,11 +45,11 @@ export default class Post extends React.Component {
               key={index.toString()}
               postCount={postCount}
             />
-          )        
+          )
         })}
-        {this.postCountDelete()}
+        {this.postCountReset()}
       </div>
-    );  
+    );
   }
 
 }
@@ -66,7 +62,7 @@ function ChatApp(props) {
   let postApplauses = props.postList[props.id].applauses;
   let applauseNames = [];
   let applauseUsers = [];
-  let postList = props.postList[props.id];
+
 
   let inputLimit = false
   let currentUserName = props.currentUser
@@ -115,8 +111,8 @@ function ChatApp(props) {
     });
 
 
-    applauseUsers.map(applauseUser => {  
-        applauseList.push(<li>{applauseUser.name}:{applauseUser.applause}</li>)
+    applauseUsers.map((applauseUser, index) => {
+      applauseList.push(<li key={index}>{applauseUser.name}:{applauseUser.applause}</li>)
     })
 
     return applauseList;
@@ -136,9 +132,11 @@ function ChatApp(props) {
     <List className={classes.root}>
       <ListItem alignItems="flex-start">
         <ListItemAvatar>
-          <Avatar alt="Remy Sharp" src={currentUser} />
-          <div>↓</div>
-          <Avatar alt="Remy Sharp" src={targetUser} />
+          <div>
+            <Avatar alt="Remy Sharp" src={currentUser} />
+            <div>↓</div>
+            <Avatar alt="Remy Sharp" src={targetUser} />
+          </div>
         </ListItemAvatar>
         <ListItemText>
           <div>{props.text}</div>
@@ -148,8 +146,10 @@ function ChatApp(props) {
               {applauses.sum}
             </Button>
           </span>
-          <ReactTooltip id={String(props.postCount)} place="bottom">            
+          <ReactTooltip id={String(props.postCount)} place="bottom">
+            <ul>
               {applauseList()}
+            </ul>
           </ReactTooltip>
         </ListItemText>
       </ListItem>

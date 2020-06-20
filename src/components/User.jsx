@@ -12,9 +12,7 @@ import Hermionie from '../assets/img/Hermionie.jpg'
 import Voldemort from '../assets/img/Voldemort.jpg'
 
 export default class User extends React.Component {
-    constructor(props){
-        super(props)
-    }
+    
 
     render() {
         let currentUser=this.props.currentUser

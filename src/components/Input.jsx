@@ -14,9 +14,7 @@ import Hermionie from '../assets/img/Hermionie.jpg'
 import Voldemort from '../assets/img/Voldemort.jpg'
 
 export default class Input extends React.Component {
-    constructor(props){
-        super(props)
-    }
+   
     render() {
         return (
             <div className="input-box">
