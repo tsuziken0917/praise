@@ -37,8 +37,8 @@ export default class Post extends React.Component {
               time={chat.postTime}
               chatCurrentUser={chat.currentUser}
               chatTargetUser={chat.targetUser}
-              onApplause={this.props.onApplause}
-              applause={chat.applause}
+              chatApplauses={chat.applauses}
+              onApplause={this.props.onApplause}  
               postList={this.props.postList}
               currentUser={this.props.currentUser}
               targetUser={this.props.targetUser}
@@ -146,7 +146,7 @@ function ChatApp(props) {
           <p>{props.time}</p>
           <span data-tip data-for={String(props.postCount)}>
             <Button variant="outlined" color="secondary" onClick={handleApplause} disabled={inputLimit}>
-              {applauses.sum}
+            👏{props.postList[props.id].applauses.sum}
             </Button>
           </span>
           <ReactTooltip id={String(props.postCount)} place="bottom">
