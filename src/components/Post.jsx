@@ -71,8 +71,8 @@ function ChatApp(props) {
   if (currentUserName === "Hermionie") currentUserName = 2
   if (currentUserName === "Voldemort") currentUserName = 3
 
-  if (props.currentUser === props.postList[props.id].currentUser ||
-    props.currentUser === props.postList[props.id].targetUser ||
+  if (props.currentUser === props.chatCurrentUser ||
+    props.currentUser === props.chatTargetUser ||
     props.postList[props.id].applauses[props.currentUser] >= 15 ||
     props.users[currentUserName].applausePoint === 0) {
     inputLimit = true;
