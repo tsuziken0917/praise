@@ -13,10 +13,10 @@ import Ron from '../assets/img/Ron.jpg'
 import Hermionie from '../assets/img/Hermionie.jpg'
 import Voldemort from '../assets/img/Voldemort.jpg'
 import ReactTooltip from 'react-tooltip'
-let postCount = -1;
+
+let postCount = -1;//postにID属性を付けるためのカウント変数
 
 export default class Post extends React.Component {
-
   postCount() {
     postCount += 1;
     return postCount;
@@ -35,6 +35,8 @@ export default class Post extends React.Component {
               id={chat.id}
               text={chat.textCompliment}
               time={chat.postTime}
+              chatCurrentUser={chat.currentUser}
+              chatTargetUser={chat.targetUser}
               onApplause={this.props.onApplause}
               applause={chat.applause}
               postList={this.props.postList}
@@ -51,7 +53,6 @@ export default class Post extends React.Component {
       </div>
     );
   }
-
 }
 
 function ChatApp(props) {
@@ -62,7 +63,6 @@ function ChatApp(props) {
   let postApplauses = props.postList[props.id].applauses;
   let applauseNames = [];
   let applauseUsers = [];
-
 
   let inputLimit = false
   let currentUserName = props.currentUser
@@ -78,15 +78,21 @@ function ChatApp(props) {
     inputLimit = true;
   }
 
-  if (props.postList[props.id].currentUser === "Harry") currentUser = Harry;
-  if (props.postList[props.id].currentUser === "Ron") currentUser = Ron;
-  if (props.postList[props.id].currentUser === "Hermionie") currentUser = Hermionie;
-  if (props.postList[props.id].currentUser === "Voldemort") currentUser = Voldemort;
+  props.postList.sort(function (a, b) {
+    if (a.id > b.id) return -1;
+    if (a.id < b.id) return 1;
+    return 0;
+  })
 
-  if (props.postList[props.id].targetUser === "Harry") targetUser = Harry;
-  if (props.postList[props.id].targetUser === "Ron") targetUser = Ron;
-  if (props.postList[props.id].targetUser === "Hermionie") targetUser = Hermionie;
-  if (props.postList[props.id].targetUser === "Voldemort") targetUser = Voldemort;
+  if (props.chatCurrentUser === "Harry") currentUser = Harry;
+  if (props.chatCurrentUser === "Ron") currentUser = Ron;
+  if (props.chatCurrentUser === "Hermionie") currentUser = Hermionie;
+  if (props.chatCurrentUser === "Voldemort") currentUser = Voldemort;
+
+  if (props.chatTargetUser === "Harry") targetUser = Harry;
+  if (props.chatTargetUser === "Ron") targetUser = Ron;
+  if (props.chatTargetUser === "Hermionie") targetUser = Hermionie;
+  if (props.chatTargetUser === "Voldemort") targetUser = Voldemort;
 
   applauses = props.postList[props.id].applauses;
 
@@ -102,7 +108,6 @@ function ChatApp(props) {
     applauseNames.map((name, index) => {
       applauseUsers.push(createApplauseList(name))
     })
-
     //applauseUsersを昇降順に並べる
     applauseUsers.sort(function (a, b) {
       if (a.applause > b.applause) return -1;
@@ -110,11 +115,9 @@ function ChatApp(props) {
       return 0;
     });
 
-
     applauseUsers.map((applauseUser, index) => {
       applauseList.push(<li key={index}>{applauseUser.name}:{applauseUser.applause}</li>)
     })
-
     return applauseList;
   }
 
