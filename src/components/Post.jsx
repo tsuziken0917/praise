@@ -14,7 +14,7 @@ import Hermionie from '../assets/img/Hermionie.jpg'
 import Voldemort from '../assets/img/Voldemort.jpg'
 import ReactTooltip from 'react-tooltip'
 
-let postCount = -1;//postにID属性を付けるためのカウント変数
+let postCount = -1;//postの連想配列のキーのためのカウント変数
 
 export default class Post extends React.Component {
   postCount() {
@@ -28,6 +28,7 @@ export default class Post extends React.Component {
   render() {
     return (
       <div className="chats-box" id={"scroll-area"}>
+        {console.log(this.props.postList)}
         {this.props.postList.map((chat, index) => {
           this.postCount()
           return (
@@ -60,7 +61,7 @@ function ChatApp(props) {
   let currentUser = "";
   let targetUser = "";
   let applauses = "";
-  let postApplauses = props.postList[props.id].applauses;
+  let postApplauses = props.postList[props.postCount].applauses;
   let applauseNames = [];
   let applauseUsers = [];
 
@@ -73,11 +74,12 @@ function ChatApp(props) {
 
   if (props.currentUser === props.chatCurrentUser ||
     props.currentUser === props.chatTargetUser ||
-    props.postList[props.id].applauses[props.currentUser] >= 15 ||
+    props.postList[props.postCount].applauses[props.currentUser] >= 15 ||
     props.users[currentUserName].applausePoint === 0) {
     inputLimit = true;
   }
 
+  //postListをid順(＝時間順)でソート
   props.postList.sort(function (a, b) {
     if (a.id > b.id) return -1;
     if (a.id < b.id) return 1;
@@ -98,7 +100,7 @@ function ChatApp(props) {
 
   //handleApplauseはpostsのapplausehandle
   const handleApplause = () => {
-    props.onApplause(props.postList[props.id]);
+    props.onApplause(props.postList[props.postCount]);
   };
 
   function applauseList() {
@@ -146,7 +148,7 @@ function ChatApp(props) {
           <p>{props.time}</p>
           <span data-tip data-for={String(props.postCount)}>
             <Button variant="outlined" color="secondary" onClick={handleApplause} disabled={inputLimit}>
-            👏{props.postList[props.id].applauses.sum}
+            <span role = "img" aria-label = "applause">👏</ span>{props.chatApplauses.sum}
             </Button>
           </span>
           <ReactTooltip id={String(props.postCount)} place="bottom">
